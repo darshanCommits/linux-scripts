@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ocred_file=/tmp/ocred.txt
+ocrs $(grimblast --notify copysave area) -o $ocred_file
+
+cat $ocred_file | wl-copy

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+replace_in_files() {
+    local max_depth=""
+    local to_replace=""
+    local replace_with=""
+
+    # Parse command line arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --max-depth)
+                shift
+                max_depth="-maxdepth $1"
+                shift
+                ;;
+            *)
+                to_replace="$1"
+                shift
+                replace_with="$1"
+                shift
+                ;;
+        esac
+    done
+
+    # Check if required arguments are provided
+    if [[ -z "$to_replace" || -z "$replace_with" ]]; then
+        echo "Usage: $0 [--max-depth MAX_DEPTH] toReplace replaceWith"
+        exit 1
+    fi
+
+    # Perform replacement in files using find and sed
+    find . $max_depth -type f -exec sed -i "s/$to_replace/$replace_with/g" {} +
+}
+
+# Call the function with command line arguments
+replace_in_files "$@"

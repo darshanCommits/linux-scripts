@@ -1,0 +1,2 @@
+#!/bin/bash
+rofi -modi "clipman:$HOME/.local/bin/clipman" -show clipman

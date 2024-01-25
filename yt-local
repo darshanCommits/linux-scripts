@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ~/.local/gitClones/yt-local
+python -m venv env
+source ~/.local/gitClones/yt-local/env/bin/activate
+python server.py

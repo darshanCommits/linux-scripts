@@ -1,0 +1,3 @@
+#!/bin/bash
+
+scrcpy --no-video --audio-buffer=200 -d

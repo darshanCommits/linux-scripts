@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Define a temporary file to store Gist URLs
+tempfile=$(mktemp)
+
+# Use GitHub CLI to list your Gists and extract the URLs
+gh gist list -L 1000 --json url | jq -r '.[].url' > "$tempfile"
+
+# Use fzf to select a Gist URL interactively
+selected_url=$(cat "$tempfile" | fzf --preview 'curl -s {} | jq -r ".files | keys"')
+
+# Check if a Gist URL was selected
+if [[ -n "$selected_url" ]]; then
+  # Use GitHub CLI to fetch the selected Gist's content and copy it to the clipboard
+  gist_id=$(echo "$selected_url" | awk -F'/' '{print $NF}')
+  gh gist view "$gist_id" | wl-copy  # Use 'wl-copy' for Wayland, or 'xclip' for X11
+  echo "Gist content copied to clipboard"
+else
+  echo "No Gist selected"
+fi
+
+# Clean up the temporary file
+rm "$tempfile"
+
